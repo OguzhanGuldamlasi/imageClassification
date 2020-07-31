@@ -17,10 +17,10 @@ img_rows = 32
 img_cols = 32
 
 batch_size = 64
-num_epochs = 100
+num_epochs = 200
 num_classes = 10
 validation_split = 0.2
-optim = SGD(learning_rate=0.9)
+optim = SGD(learning_rate=0.001,momentum =0.9)
 
 # VERİ SETİ YÜKLENİR:
 
@@ -48,18 +48,20 @@ X_test /= 255
 # X_test = (X_test-mean)/(std+1e-7)
 # np.std(X_train,axis=(0,1,2,3))
 
-model = Sequential()
-model.add(Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(32, 32, 3)))
+model =Sequential()
+model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)))
 model.add(MaxPooling2D((2, 2)))
-model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
-model.add(MaxPooling2D((2, 2)))
-model.add(Conv2D(128, (3, 3), activation='relu', padding='same'))
-model.add(MaxPooling2D((2, 2)))
-model.add(Flatten())
-model.add(Dense(128,activation='relu'))
 model.add(Dropout(0.2))
+model.add(Conv2D(64, (3, 3), activation='relu', ))
+model.add(MaxPooling2D((2, 2)))
+model.add(Dropout(0.3))
+model.add(Conv2D(128, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(Dropout(0.4))
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(10, activation='relu'))
-model.summary()
 
 
 model.compile(loss='categorical_crossentropy', optimizer=optim,
